@@ -1,0 +1,33 @@
+kind: HorizontalPodAutoscaler
+apiVersion: autoscaling/v2
+metadata: 
+  name: my-app-hpa
+  namespace: ai-incident-namespace
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    apiVersion: apps/v1
+    name: ai-incident-deployment 
+
+  minReplicas: 2
+  maxReplicas: 3
+
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60
+    
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60
+
+  - type: Resource
+    resource: 
+      name: memory
+      target: 
+        type: AverageValue
+        averageValue: 500Mi
+
