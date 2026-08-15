@@ -100,7 +100,7 @@ kubectl apply -f ~/k8s/flask-service.yml
 echo "Applying HPA..."
 
 kubectl apply -f ~/k8s/app-hpa.yml
-kubectl apply -f ~/k8s/ollama-hpa.yml
+#kubectl apply -f ~/k8s/ollama-hpa.yml
 
 
 # ------------------------------------------------

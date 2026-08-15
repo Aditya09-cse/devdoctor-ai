@@ -3,6 +3,8 @@ name: DevSecOps End To End Pipeline
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '**/*.md'
   workflow_dispatch:
 
 jobs:
