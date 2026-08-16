@@ -75,6 +75,8 @@ def get_incident_or_404(incident_id):
 
 @app.route("/")
 def dashboard():
+    from datetime import datetime, timedelta
+    
     with db_cursor() as cursor:
 
         cursor.execute(
@@ -111,10 +113,43 @@ def dashboard():
 
         recent = cursor.fetchall()
 
+        # Get trend data for last 7 days
+        cursor.execute(
+            """
+            SELECT DATE(created_at) as date, COUNT(*) as count
+            FROM incidents
+            WHERE created_at >= NOW() - INTERVAL '7 days'
+            GROUP BY DATE(created_at)
+            ORDER BY DATE(created_at)
+            """
+        )
+        
+        trend_data = cursor.fetchall()
+        trend_labels = [row[0].strftime('%a') if row[0] else '' for row in trend_data]
+        trend_values = [row[1] for row in trend_data]
+
+        # Get category distribution
+        cursor.execute(
+            """
+            SELECT category, COUNT(*) as count
+            FROM incidents
+            GROUP BY category
+            ORDER BY count DESC
+            """
+        )
+        
+        category_data = cursor.fetchall()
+        category_labels = [row[0] for row in category_data]
+        category_values = [row[1] for row in category_data]
+
     return render_template(
         "dashboard.html",
         stats=stats,
         incidents=recent,
+        trend_labels=trend_labels,
+        trend_values=trend_values,
+        category_labels=category_labels,
+        category_values=category_values,
     )
 
 
