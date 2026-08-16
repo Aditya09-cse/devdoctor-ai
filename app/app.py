@@ -1,3 +1,4 @@
+# test application for incident management with AI analysis and assistant features
 import os
 
 from flask import (
