@@ -70,7 +70,7 @@ kubectl get pods -n ai-incident-namespace
 echo ""
 echo "===== Application Metrics ====="
 
-kubectl top pods -n ai-incident-namespace
+kubectl top po -n ai-incident-namespace
 
 
 echo ""
